@@ -58,27 +58,47 @@ public class Login {
         this.rol = rol;
     }
     
-    public Empleado validar(String usuario, String password) {
-        Empleado empleado = null;
-        String sql = "SELECT * FROM login WHERE usuario = ? AND password = ?";
-        
+    public int validarUsuario(String user, String password) {
+        int idUsuarioEncontrado = 0;
         try {
-            cn = new Conexion(); // Inicializa la conexión
+            PreparedStatement parametro;
+            cn = new Conexion();
             cn.abrir_conexion();
-            PreparedStatement pst = cn.conexionDB.prepareStatement(sql);
-            pst.setString(1, usuario);
-            pst.setString(2, password);
-            ResultSet rs = pst.executeQuery();
+            String query = "SELECT id_login FROM login WHERE usuario = ? AND password = ? AND estado = 1;";
+            parametro = cn.conexionDB.prepareStatement(query);
+            parametro.setString(1, user);
+            parametro.setString(2, password);
+            ResultSet resultado = parametro.executeQuery();
 
-            if (rs.next()) {
-                empleado = new Empleado();
-                empleado.setId(rs.getInt("id_login"));
-                empleado.setNombres(rs.getString("usuario"));
-                empleado.setRol(rs.getString("rol"));
+            if (resultado.next()) {
+                idUsuarioEncontrado = resultado.getInt("id_login");
             }
+            cn.cerrar_conexion();
         } catch (SQLException ex) {
-            System.out.println("Error en la validación: " + ex.getMessage());
+            System.out.println("Error al validar usuario: " + ex.getMessage());
+            idUsuarioEncontrado = 0;
         }
-        return empleado; // Retorna null si no se encuentra el usuario
+        return idUsuarioEncontrado;
+    }
+
+    public String obtenerNombreUsuario(int idUsuario) {
+        String nombreUsuario = null;
+        try {
+            PreparedStatement parametro;
+            cn = new Conexion();
+            cn.abrir_conexion();
+            String query = "SELECT usuario FROM login WHERE id_login = ?;";
+            parametro = cn.conexionDB.prepareStatement(query);
+            parametro.setInt(1, idUsuario);
+            ResultSet resultado = parametro.executeQuery();
+
+            if (resultado.next()) {
+                nombreUsuario = resultado.getString("usuario");
+            }
+            cn.cerrar_conexion();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener nombre de usuario: " + ex.getMessage());
+        }
+        return nombreUsuario;
     }
 }

@@ -8,6 +8,7 @@ import Modelo.Login;
 import Modelo.Empleado;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -58,65 +59,33 @@ Login login= new Login();
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        @Override
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    String user = request.getParameter("txt_user");
-    String pass = request.getParameter("txt_pass");
+            String user = request.getParameter("txt_user");
+            String pass = request.getParameter("txt_pass");
 
-    // 2. Validar el usuario
-    empleado = login.validar(user, pass); // Retorna un objeto Empleado
+            int idUsuarioValidado = login.validarUsuario(user, pass);
 
-    if (empleado != null) {
-        // Crear una sesión y almacenar los datos del usuario
-        HttpSession session = request.getSession();
-        session.setAttribute("empleado", empleado);
+            if (idUsuarioValidado > 0) {
+                // Obtener el nombre de usuario desde la base de datos
+                String nombreUsuario = login.obtenerNombreUsuario(idUsuarioValidado);
 
-        // Verificar el rol del usuario y redirigir según corresponda
-        String rol = empleado.getRol();
-        boolean accesoPermitido = false;
-
-        switch (rol) {
-            case "admin":
-                accesoPermitido = true; // Admin tiene acceso a todo
-                break;
-            case "Ventas":
-                accesoPermitido = request.getRequestURI().contains("Principal.jsp") || 
-                                  request.getRequestURI().contains("Registro_venta.jsp");
-                break;
-            case "Compras":
-                accesoPermitido = request.getRequestURI().contains("Principal.jsp") || 
-                                  request.getRequestURI().contains("Registro_compra.jsp");
-                break;
-            case "Bodega":
-                accesoPermitido = request.getRequestURI().contains("Principal.jsp") || 
-                                  request.getRequestURI().contains("Producto.jsp");
-                break;
-            case "Clientes":
-                accesoPermitido = request.getRequestURI().contains("Principal.jsp") || 
-                                  request.getRequestURI().contains("Cliente.jsp");
-                break;
-            case "RRHH":
-                accesoPermitido = request.getRequestURI().contains("Principal.jsp") || 
-                                  request.getRequestURI().contains("Empleado.jsp");
-                break;
-            default:
-                break;
+                if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("usuarioId", idUsuarioValidado);
+                    session.setAttribute("nombreUsuario", nombreUsuario); // Guardar el nombre en la sesión
+                    response.sendRedirect("Principal.jsp");
+                } else {
+                    request.setAttribute("error", "Error al obtener el nombre de usuario.");
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                }
+            } else {
+                request.setAttribute("error", "Usuario o contraseña incorrectos");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
         }
-
-        if (accesoPermitido) {
-            response.sendRedirect("Principal.jsp"); // Cambia la URL a Principal.jsp
-        } else {
-            // Si no tiene acceso, redirigir con un mensaje
-            request.setAttribute("error", "No tiene acceso a esa sección.");
-            response.sendRedirect("Principal.jsp"); // O podrías mostrar el error en un mensaje en Principal.jsp
-        }
-    } else {
-        // Enviar mensaje de error y volver a index.jsp
-        request.setAttribute("error", "Usuario o contraseña incorrectos");
-        response.sendRedirect("index.jsp"); // Cambiar a sendRedirect aquí también
-    }
-    }
+    
 
 
     /**
@@ -124,9 +93,10 @@ Login login= new Login();
      *
      * @return a String containing servlet description
      */
+     @Override   
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       response.sendRedirect("index.jsp");
     }
 
     /**
