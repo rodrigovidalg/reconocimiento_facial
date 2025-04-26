@@ -49,60 +49,52 @@
     <body>
 
         <!-- Título del reporte -->
-        <div class="text-center mb-4">
-            <h2>Reporte de Actividades</h2>
-            <p class="lead">Visualiza los reportes generados por el sistema.</p>
+<div class="text-center mb-4">
+        <h2>Reporte de Actividades</h2>
+        <p class="lead">Visualiza los reportes generados por el sistema.</p>
+    </div>
+
+    <div class="table-container">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Usuario</th>
+                        <th>Nombre Completo</th> <th>Fecha y Hora</th>
+                        <th>Zona de Acceso</th>
+                        <th>Resultado</th>
+                        <th>Metodo</th>
+                        <th>Foto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        ReporteDAO reporte = new ReporteDAO();
+                        List<Reporte> listaRegistros = reporte.leer();
+
+                        for (Reporte registro : listaRegistros) {
+                    %>
+                    <tr>
+                        <td><%= registro.getId()%></td>
+                        <td><%= registro.getId_usuario()%></td>
+                        <td><%= registro.getNombre_completo_usuario()%></td> <td><%= registro.getFecha_hora()%></td>
+                        <td><%= registro.getZona_acceso()%></td>
+                        <td><%= registro.getResultado()%></td>
+                        <td><%= registro.getMetodo()%></td>
+                        <td><img src="<%= registro.getImagen()%>" alt="Foto" class="img-fluid" width="50"></td>
+                    </tr>
+                    <%
+                        }
+                    %>
+                </tbody>
+            </table>
         </div>
+    </div>
 
-        <!-- Tabla de reportes -->
-        <div class="table-container">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead class="table-primary">
-                        <tr>
-                            <th>ID</th>
-                            <th>ID Usuario</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Fecha y Hora</th>
-                            <th>Zona de Acceso</th>
-                            <th>Resultado</th>
-                            <th>Metodo</th>
-                            <th>Foto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            // Crear objeto Reporte y obtener los registros
-                            ReporteDAO reporte = new ReporteDAO();
-                            List<Reporte> listaRegistros = reporte.leer();
-
-                            // Iterar sobre la lista de registros
-                            for (Reporte registro : listaRegistros) {
-                        %>
-                        <tr>
-                            <td><%= registro.getId()%></td>
-                            <td><%= registro.getId_usuario()%></td>
-                            <td><%= registro.getNombres_usuario()%></td>
-                            <td><%= registro.getApellidos_usuario()%></td>
-                            <td><%= registro.getFecha_hora()%></td>
-                            <td><%= registro.getZona_acceso()%></td>
-                            <td><%= registro.getResultado()%></td>
-                            <td><%= registro.getMetodo()%></td>
-                            <td><img src="<%= registro.getImagen()%>" alt="Foto" class="img-fluid" width="50"></td>
-                        </tr>
-                        <%
-                            }
-                        %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Botones para exportar -->
-        <a href="http://localhost:8080/db_biometria/report" target="_blank" class="btn btn-sn btn-outline-primary">
-            <i class="fas fa-file-pdf"></i> Exportar PDF
-        </a>
+    <a href="http://localhost:8081/db_biometria/report" target="_blank" class="btn btn-sn btn-outline-primary">
+        <i class="fas fa-file-pdf"></i> Exportar PDF
+    </a>
 
 
 

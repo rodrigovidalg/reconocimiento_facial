@@ -16,7 +16,7 @@ import java.util.List;
 
 
 public class ReporteDAO {
-    private int id, id_usuario;
+     private int id, id_usuario;
     private String fecha_hora;
     private String zona_acceso;
     private String resultado;
@@ -35,7 +35,7 @@ public class ReporteDAO {
         this.metodo = metodo;
         this.imagen = imagen;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -98,35 +98,36 @@ public class ReporteDAO {
         try {
             cn = new Conexion();
             cn.abrir_conexion();
-            // Modificamos la consulta para leer los datos de la tabla registros_acceso
-            String query = "SELECT r.id, r.id_usuario, u.nombres, u.apellidos, r.fecha_hora, r.zona_acceso, r.resultado, r.metodo, r.imagen " +
+            // Modificamos la consulta para obtener el nombre completo
+            String query = "SELECT r.id, r.id_usuario, CONCAT(u.nombre, ' ', u.dpi) AS nombre_completo, " + // Ajuste aquí para tu tabla 'usuarios'
+                           "DATE_FORMAT(r.fecha_hora, '%Y-%m-%d %H:%i:%s') AS fecha_hora, " +
+                           "r.zona_acceso, " +
+                           "CASE r.resultado WHEN 1 THEN 'Exitoso' WHEN 0 THEN 'Fallido' ELSE 'Desconocido' END AS resultado, " +
+                           "r.metodo, r.imagen " +
                            "FROM registros_acceso AS r " +
-                           "INNER JOIN usuarios AS u ON r.id_usuario = u.id_usuario";
+                           "INNER JOIN usuarios AS u ON r.id_usuario = u.id_usuario "+
+                            "";
             ResultSet consulta = cn.conexionDB.createStatement().executeQuery(query);
-            
-            // Recorremos el resultado y llenamos la lista
+
             while (consulta.next()) {
                 int id = consulta.getInt("id");
                 int id_usuario = consulta.getInt("id_usuario");
-                String nombres = consulta.getString("nombres");
-                String apellidos = consulta.getString("apellidos");
+                String nombre_completo = consulta.getString("nombre_completo");
                 String fecha_hora = consulta.getString("fecha_hora");
                 String zona_acceso = consulta.getString("zona_acceso");
                 String resultado = consulta.getString("resultado");
                 String metodo = consulta.getString("metodo");
                 String imagen = consulta.getString("imagen");
-                
-                // Creamos el objeto Reporte y lo agregamos a la lista
+
                 Reporte registro = new Reporte();
                 registro.setId(id);
                 registro.setId_usuario(id_usuario);
+                registro.setNombre_completo_usuario(nombre_completo); // Usar el nuevo campo
                 registro.setFecha_hora(fecha_hora);
                 registro.setZona_acceso(zona_acceso);
                 registro.setResultado(resultado);
                 registro.setMetodo(metodo);
                 registro.setImagen(imagen);
-                registro.setNombres_usuario(nombres);
-                registro.setApellidos_usuario(apellidos);
                 listaRegistros.add(registro);
             }
             cn.cerrar_conexion();
@@ -135,4 +136,5 @@ public class ReporteDAO {
         }
         return listaRegistros;
     }
+
 }
