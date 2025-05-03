@@ -55,42 +55,49 @@
     </div>
 
     <div class="table-container">
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered table-hover">
-                <thead class="table-primary">
-                    <tr>
-                        <th>ID</th>
-                        <th>ID Usuario</th>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>ID Usuario</th>
                         <th>Nombre Completo</th> <th>Fecha y Hora</th>
-                        <th>Zona de Acceso</th>
-                        <th>Resultado</th>
-                        <th>Metodo</th>
-                        <th>Foto</th>
+                    <th>Zona de Acceso</th>
+                    <th>Resultado</th>
+                    <th>Metodo</th>
+                    <th>Foto</th>
+                    <th>Reporte</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <%
-                        ReporteDAO reporte = new ReporteDAO();
-                        List<Reporte> listaRegistros = reporte.leer();
+            </thead>
+            <tbody>
+    <%
+    ReporteDAO reporte = new ReporteDAO();
+    List<Reporte> listaRegistros = reporte.leer();
 
-                        for (Reporte registro : listaRegistros) {
-                    %>
-                    <tr>
-                        <td><%= registro.getId()%></td>
-                        <td><%= registro.getId_usuario()%></td>
-                        <td><%= registro.getNombre_completo_usuario()%></td> <td><%= registro.getFecha_hora()%></td>
-                        <td><%= registro.getZona_acceso()%></td>
-                        <td><%= registro.getResultado()%></td>
-                        <td><%= registro.getMetodo()%></td>
-                        <td><img src="<%= registro.getImagen()%>" alt="Foto" class="img-fluid" width="50"></td>
-                    </tr>
-                    <%
-                        }
-                    %>
-                </tbody>
-            </table>
-        </div>
+    for (Reporte registro : listaRegistros) {
+    %>
+    <tr>
+        <td><%= registro.getId()%></td>
+        <td><%= registro.getId_usuario()%></td>
+        <td><%= registro.getNombre_completo_usuario()%></td>
+        <td><%= registro.getFecha_hora()%></td>
+        <td><%= registro.getZona_acceso()%></td>
+        <td><%= registro.getResultado()%></td>
+        <td><%= registro.getMetodo()%></td>
+        <td><img src="<%= registro.getImagen()%>" alt="Foto" class="img-fluid" width="50"></td>
+        <td>
+            <a href="http://localhost:8081/db_biometria/reporteIndividual?id=<%= registro.getId()%>" target="_blank" class="btn btn-sm btn-primary">
+                Ver Detalle
+            </a>
+        </td>
+    </tr>
+    <%
+    }
+    %>
+</tbody>
+        </table>
     </div>
+</div>
 
     <a href="http://localhost:8081/db_biometria/report" target="_blank" class="btn btn-sn btn-outline-primary">
         <i class="fas fa-file-pdf"></i> Exportar PDF

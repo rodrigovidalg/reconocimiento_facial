@@ -5,11 +5,13 @@ Modelo\Visitante.class
 com\rf\reconocimiento_facial\JakartaRestConfiguration.class
 Modelo\Reporte.class
 Controlador\sr_cControlador.class
+Modelo\ReporteVisitante.class
 Controlador\sr_cVisitante.class
 Modelo\Empleado.class
 com\rf\reconocimiento_facial\resources\JakartaEE10Resource.class
 Modelo\ReporteDAO.class
 Controlador\sr_cLogout.class
+Modelo\ReporteVisitanteDAO.class
 Controlador\sr_cReporte$1.class
 Modelo\Puesto.class
 Modelo\ExportarPDF.class
