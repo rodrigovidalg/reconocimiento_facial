@@ -51,7 +51,10 @@
                             <td><%= registro.getResultado() == 1 ? "Exitoso" : (registro.getResultado() == 0 ? "Fallido" : "Desconocido") %></td>
                             <td><%= registro.getMetodo()%></td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-primary">Ver Detalle</a> </td>
+    <a href="http://localhost:8081/db_biometria/reporteIndividualV?id=<%= registro.getId()%>" target="_blank" class="btn btn-sm btn-primary">
+        Ver Detalle
+    </a>
+</td>
                         </tr>
                         <%
                         }
@@ -62,7 +65,7 @@
         </div>
 
         <div class="text-center mt-3">
-    <a href="http://localhost:8081/db_biometria/reporteV" target="_blank" class="btn btn-sn btn-outline-primary">
+    <a href="http://localhost:8081/db_biometria/ReporteVisitantes" target="_blank" class="btn btn-sn btn-outline-primary">
         <i class="fas fa-file-pdf"></i> Exportar PDF
     </a>
 </div>
