@@ -3,8 +3,10 @@ Controlador\sr_cIndex.class
 Modelo\Login.class
 Modelo\Visitante.class
 com\rf\reconocimiento_facial\JakartaRestConfiguration.class
+Modelo\ReporteUsuario.class
 Modelo\Reporte.class
 Controlador\sr_cControlador.class
+Modelo\ReporteUsuarioDAO.class
 Modelo\ReporteVisitante.class
 Controlador\sr_cVisitante.class
 Modelo\Empleado.class

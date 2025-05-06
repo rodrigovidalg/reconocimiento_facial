@@ -105,6 +105,8 @@
          <a href="Empleado.jsp" target="frame"><i class="bi bi-people"></i> Empleados</a>
          <a href="Visitante.jsp" target="frame"><i class="bi bi-person-lines-fill"></i> Visitantes</a>
          <a href="ReporteVisitante.jsp" target="frame"><i class="bi bi-file-earmark-bar-graph"></i> Reportes Visitantes</a>
+         <a href="ReporteUsuario.jsp" target="frame"><i class="bi bi-file-earmark-bar-graph"></i> Reportes Usuario</a>
+         
          <a href="Reporte.jsp" target="frame"><i class="bi bi-file-earmark-bar-graph"></i> Reportes</a>
       </div>
       <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
